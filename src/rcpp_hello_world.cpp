@@ -1,22 +1,45 @@
 
 #include <Rcpp.h>
-//ffing kidding me
 #include <netcdf.hh>
 using namespace Rcpp;
 
+//' Open.  
+//'
+//' Open the file. 
+//' @param dsn data source name, file name or URL
+//' @export
+//' @examples
+//' nc_open(raadtools::sstfiles()$fullname[1])
+//' ## problem file: "http://www.auscover.org.au/thredds/dodsC/auscover/lpdaac-csiro/lpdaac-mosaics/c5/v1-hdf4/aust/MOD13Q1.005/2014.11.17/MOD13Q1.2014.321.aust.005.b01.250m_ndvi.hdf.gz"
+//' f <- "http://www.auscover.org.au/thredds/dodsC/auscover/lpdaac-csiro/lpdaac-mosaics/c5/v1-hdf4/aust/MOD13Q1.005/2014.11.17/MOD13Q1.2014.321.aust.005.b01.250m_ndvi.hdf.gz"
+//' nc_open(f)
 // [[Rcpp::export]]
-List rcpp_hello_world() {
-
-    CharacterVector x = CharacterVector::create( "foo", "bar" )  ;
-    NumericVector y   = NumericVector::create( 0.0, 1.0 ) ;
-    List z            = List::create( x, y ) ;
-
-    return z ;
+List nc_open(CharacterVector dsn) {
+    std::string fname = Rcpp::as<std::string>(dsn);
+     int  status;                           /* error status */
+     int ncid;                              /* netCDF ID */
+     status = nc_open(fname.c_str(), NC_NOWRITE, &ncid);
+    
+    
+     List out = List::create();
+     out["status"] = status;
+     out["ncid"] = ncid;
+     return out;
 }
 
 
+
+
+
+//' Test.  
+//'
+//' test. 
+//' @param filename data source name, file name or URL
+//' @export
+//' @examples
+//' nctest(raadtools::sstfiles()$fullname[1])
 // [[Rcpp::export]]
-List boogietastic(CharacterVector filename) {
+List nctest(CharacterVector filename) {
   std::string fname = Rcpp::as<std::string>(filename);
      int  status;                           /* error status */
      int ncid;                              /* netCDF ID */
@@ -26,7 +49,9 @@ List boogietastic(CharacterVector filename) {
 //        ...
      status = nc_open(fname.c_str(), NC_NOWRITE, &ncid);
      
-     List z = List::create(status);
+     List z = List::create();
+     z["status"] = status;
+     z["ncid"] = ncid;
      return z;
 }
 //     if (status != NC_NOERR) handle_error(status);

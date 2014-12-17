@@ -1,9 +1,24 @@
 ## MDS doesn't really understand this
 
 NETCDF_CFLAGS = /usr/include -DgFortran
-NETCDF_LIBS   = -L/usr/lib -lnetcdf
+NETCDF_LIBS   = -L/usr/lib -lnetcdf 
+
 # RCPP_LDFLAGS = @RCPP_LDFLAGS@
 
 # combine with standard arguments for R
-PKG_CPPFLAGS = $(NETCDF_CFLAGS) -I../inst/include
-PKG_LIBS += $(NETCDF_LIBS) $(RCPP_LDFLAGS)
+PKG_CPPFLAGS = $(NETCDF_CFLAGS) -I../inst/include 
+PKG_LIBS += $(NETCDF_LIBS)  $(RCPP_LDFLAGS)
+
+
+## potentially add hdf.h
+##NETCDF_CFLAGS = /usr/include -DgFortran
+##NETCDF_LIBS   = -L/usr/lib -lnetcdf 
+
+##HDF_CFLAGS = /usr/include/hdf
+##HDF_LIBS   = -L/usr/lib -lmfhdf -ldf -ljpeg -lz
+
+# RCPP_LDFLAGS = @RCPP_LDFLAGS@
+
+# combine with standard arguments for R
+##PKG_CPPFLAGS = $(NETCDF_CFLAGS) -I../inst/include $(HDF_CFLAGS) -I../inst/include
+##PKG_LIBS += $(NETCDF_LIBS) $(HDF_LIBS)  $(RCPP_LDFLAGS)

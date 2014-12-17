@@ -1,4 +1,3 @@
-## MDS doesn't really understand this
 
 NETCDF_CFLAGS = /usr/include -DgFortran
 NETCDF_LIBS   = -L/usr/lib -lnetcdf 

@@ -35,7 +35,7 @@ List open_input_ncdf4(CharacterVector dsn) {
   int ncid;                              /* netCDF ID */
   status_open = nc_open(fname.c_str(), NC_NOWRITE, &ncid); 
   // in smigen.cpp "level-3 binned data" is title case
-  status_grpid = nc_inq_ncid(	ncid, "level-3_binned_data", &grpid);
+  status_grpid = nc_inq_ncid(  ncid, "level-3_binned_data", &grpid);
   status_dimid = nc_inq_dimid( grpid, "binIndexDim", &dimid);
   status_nrows = nc_inq_dimlen( grpid, dimid, &nrows);
   status_binindex_id = nc_inq_varid( grpid, "BinIndex", &binindex_id);
@@ -183,6 +183,9 @@ List nctest(CharacterVector filename) {
   z["ncid"] = ncid;
   return z;
 }
+
+
+
 //     if (status != NC_NOERR) handle_error(status);
 //        ...
 //     status = nc_inq_varid (ncid, "rh", &rh_id);

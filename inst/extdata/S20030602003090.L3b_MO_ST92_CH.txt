@@ -1,0 +1,118 @@
+netcdf S20030602003090.L3b_MO_ST92_CHL {
+
+// global attributes:
+		:product_name = "S20030602003090.L3b_MO_ST92_CHL.nc" ;
+		:title = "SeaWiFS Level-3 Binned Data" ;
+		:instrument = "SeaWiFS" ;
+		:platform = "Orbview-2" ;
+		:temporal_range = "other" ;
+		:start_orbit_number = 29684 ;
+		:end_orbit_number = 30143 ;
+		:date_created = "2014212003402000" ;
+		:processing_version = "2014.0" ;
+		:history = "l3bin par=S20030602003090.L3b_MO_ST92_CHL.param" ;
+		:time_coverage_start = "2003-02-28T18:30:48.000Z" ;
+		:time_coverage_end = "2003-03-30T20:00:03.000Z" ;
+		:northernmost_latitude = 71.70834f ;
+		:southernmost_latitude = -76.29166f ;
+		:easternmost_longitude = 179.9583f ;
+		:westernmost_longitude = -179.9583f ;
+		:geospatial_lat_max = 71.70834f ;
+		:geospatial_lat_min = -76.29166f ;
+		:geospatial_lon_max = 179.9583f ;
+		:geospatial_lon_min = -179.9583f ;
+		:geospatial_lat_units = "degrees_north" ;
+		:geospatial_lon_units = "degrees_east" ;
+		:geospatial_lon_resolution = 0.0833333333333333 ;
+		:geospatial_lat_resolution = 0.0833333333333333 ;
+		:spatialResolution = "9.2 km" ;
+		:data_bins = 3473362 ;
+		:percent_data_bins = 58.46995f ;
+		:units = "chlor_a:mg m^-3" ;
+		:binning_scheme = "Integerized Sinusoidal Grid" ;
+		:project = "Ocean Biology Processing Group (NASA/GSFC/OBPG)" ;
+		:institution = "NASA Goddard Space Flight Center, Ocean Ecology Laboratory, Ocean Biology Processing Group" ;
+		:standard_name_vocabulary = "NetCDF Climate and Forecast (CF) Metadata Convenention" ;
+		:Metadata_Conventions = "Unidata Dataset Discovery v1.0" ;
+		:Conventions = "CF-1.6, Unidata Dataset Discovery v1.0" ;
+		:naming_authority = "gov.nasa.gsfc.sci.oceandata" ;
+		:license = "http://science.nasa.gov/earth-science/earth-science-data/data-information-policy/" ;
+		:creator_name = "NASA/GSFC/OBPG" ;
+		:publisher_name = "NASA/GSFC/OBPG" ;
+		:creator_email = "data@oceancolor.gsfc.nasa.gov" ;
+		:publisher_email = "data@oceancolor.gsfc.nasa.gov" ;
+		:creator_url = "http://oceandata.sci.gsfc.nasa.gov" ;
+		:publisher_url = "http://oceandata.sci.gsfc.nasa.gov" ;
+		:processing_level = "L3 Binned" ;
+		:cdm_data_type = "point" ;
+		:identifier_product_doi_authority = "http://dx.doi.org" ;
+		:identifier_product_doi = "10.5067/ORBVIEW-2/SEAWIFS_OC.2014.0" ;
+		:keywords = "Oceans > Ocean Chemistry > Chlorophyll; Oceans > Ocean Optics > Ocean Color" ;
+		:keywords_vocabulary = "NASA Global Change Master Directory (GCMD) Science Keywords" ;
+
+group: level-3_binned_data {
+  types:
+    compound binListType {
+      uint bin_num ;
+      short nobs ;
+      short nscenes ;
+      float weights ;
+      float time_rec ;
+    }; // binListType
+    compound binDataType {
+      float sum ;
+      float sum_squared ;
+    }; // binDataType
+    compound binIndexType {
+      uint start_num ;
+      uint begin ;
+      uint extent ;
+      uint max ;
+    }; // binIndexType
+  dimensions:
+  	binListDim = UNLIMITED ; // (3473362 currently)
+  	binDataDim = UNLIMITED ; // (3473362 currently)
+  	binIndexDim = UNLIMITED ; // (2160 currently)
+  variables:
+  	binListType BinList(binListDim) ;
+  	binDataType chlor_a(binDataDim) ;
+  	binIndexType BinIndex(binIndexDim) ;
+  } // group level-3_binned_data
+
+group: processing_control {
+
+  // group attributes:
+  		:software_name = "L3BIN" ;
+  		:software_version = "4.02" ;
+  		:source = "S20030652003072.L3b_8D_ST92_CHL.nc,S20030732003080.L3b_8D_ST92_CHL.nc,S20030812003088.L3b_8D_ST92_CHL.nc,S2003060.L3b_DAY_ST92_CHL.nc,S2003061.L3b_DAY_ST92_CHL.nc,S2003062.L3b_DAY_ST92_CHL.nc,S2003063.L3b_DAY_ST92_CHL.nc,S2003064.L3b_DAY_ST92_CHL.nc,S2003089.L3b_DAY_ST92_CHL.nc,S2003090.L3b_DAY_ST92_CHL.nc" ;
+  		:l2_flag_names = "ATMFAIL,LAND,HILT,HISATZEN,STRAYLIGHT,CLDICE,COCCOLITH,LOWLW,CHLWARN,CHLFAIL,NAVWARN,MAXAERITER,ATMWARN,HISOLZEN,NAVFAIL,FILTER,HIGLINT" ;
+
+  group: input_parameters {
+
+    // group attributes:
+    		:INFILE = "/data1/sdpsoper/vdc/vpu8/workbuf/l3inlist.dat" ;
+    		:OFILE = "S20030602003090.L3b_MO_ST92_CHL.nc" ;
+    		:PFILE = "S20030602003090.L3b_MO_ST92_CHL.nc" ;
+    		:OFORMAT = "netCDF4" ;
+    		:SYEAR = "2003" ;
+    		:EYEAR = "2003" ;
+    		:SDAY = "60" ;
+    		:EDAY = "90" ;
+    		:SORBIT = "-1" ;
+    		:EORBIT = "-1" ;
+    		:OUT_PARM = "DEFAULT" ;
+    		:TFLAG = "O" ;
+    		:PROCESSING = "2014.0" ;
+    		:REDUCE_FAC = "1" ;
+    		:MERGED = "" ;
+    		:LONEAST = "180.000000" ;
+    		:LONWEST = "-180.000000" ;
+    		:LATNORTH = "90.000000" ;
+    		:LATSOUTH = "-90.000000" ;
+    		:VERBOSE = "0" ;
+    		:UNIT_WGT = "0" ;
+    		:MEDIAN = "0" ;
+    		:DEFLATE = "4" ;
+    } // group input_parameters
+  } // group processing_control
+}

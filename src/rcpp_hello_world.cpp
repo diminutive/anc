@@ -3,6 +3,59 @@
 #include <netcdf.hh>
 using namespace Rcpp;
 
+
+//' Open.  
+//'
+//' Open the file. 
+//' @param dsn data source name, file name or URL
+//' @export
+//' @examples 
+//' f1 <- "/rdsi/PRIVATE/home/mdsumner/Git/rancid/data/O1997001.L3b_DAY_CHL.nc"
+//' open_input_ncdf4(f1)
+// [[Rcpp::export]]
+List open_input_ncdf4(CharacterVector dsn) {
+  
+   std::string fname = Rcpp::as<std::string>(dsn);
+     int  status;                           /* error status */
+     int ncid;                              /* netCDF ID */
+     status = nc_open(fname.c_str(), NC_NOWRITE, &ncid); 
+     
+  int dimid;
+  int grpid; 
+  size_t nrows;
+  int binindex_id;
+  int binlist_id; 
+  int bindata_id; 
+  status = nc_inq_ncid(	ncid, "Level-3 Binned Data", &grpid);
+  status = nc_inq_dimid( grpid, "binIndexDim", &dimid);
+  status = nc_inq_dimlen( grpid, dimid, &nrows);
+//
+  status = nc_inq_varid( grpid, "BinIndex", &binindex_id);
+ status = nc_inq_varid( grpid, "BinList", &binlist_id);
+  status = nc_inq_varid(grpid, "chlor_a_sum", &bindata_id);
+//  if ( status != NC_NOERR) {
+//    // don't know what "endl" is (iostream?)
+//    //cout << "Product \"" << pname << "\" not found in input file" << endl;
+//    exit(1);
+//  }
+
+  //read_attrs(-ncid, meta_l3b);
+
+   List out = List::create();
+   out["status"] = status;
+   out["ncid"] = ncid;
+   out["grpid"] = grpid;
+   out["dimid"] = dimid;
+   out["nrows"] = nrows;
+   out["binindex_id"] = binindex_id;
+   out["binlist_id"] = binlist_id;
+   out["bindata_id"] = bindata_id;
+   out["status"] = status;
+  
+   
+   return out;
+}
+
 //' Open.  
 //'
 //' Open the file. 

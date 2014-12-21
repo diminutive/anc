@@ -61,9 +61,30 @@ List Rnc_inq(int grpid) {
     dnames[idim] = recname; 
   }
   
+
+  //   int nc_inq_var(int ncid, int varid, char *name, nc_type *xtypep, int *ndimsp, int dimids[], int *nattsp);
+  // var dims somehow IntegerVector lens(nvars);
+  CharacterVector vnames(nvars); 
+  //?? vtypes? CharacterVector vtypes(nvars); 
+  int  var_dimids[NC_MAX_VAR_DIMS];
+
+  int var_natts; 
+  int var_ndim; 
+  nc_type var_type; 
+  for (int ivar = 0; ivar < nvars; ivar++) {
+    status = nc_inq_var(grpid, ivar, recname, &var_type, &var_ndim, var_dimids, &var_natts); 
+  //  dimlens[idim] = ilen; 
+    vnames[ivar] = recname; 
+    //vtypes[ivar] = ??; 
+    
+    
+  }
+  
+  IntegerVector R_dimids(var_ndim); 
+  //for (int ii = 0; ii < var_ndim; ii++) R_dimids[ii] = var_dimids[ii]; 
   List out = List::create(); 
   out["dims"] = List::create(Named("length") = dimlens, Named("name") = dnames);
-  out["nvars"] = nvars;
+  out["vars"] = List::create(Named("varnames") = vnames, Named("natts") = var_natts); //, Named("dimIDs") = R_dimids); 
   out["ngatts"] = ngatts; 
   out["unlimdimid"] = unlimdimid;
   return out; 

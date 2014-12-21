@@ -1,5 +1,11 @@
-anc:::allgroups(f1)
+
+f1 <- "/rdsi/PRIVATE/home/mdsumner/Git/rancid/data/S20030602003090.L3b_MO_ST92_CHL.nc"
+f2 <- "/rdsi/PRIVATE/home/mdsumner/Git/rancid/data/O1997001.L3b_DAY_CHL.nc"
+
 f3 <- "/rdsi/PRIVATE/data/eclipse.ncdc.noaa.gov/pub/OI-daily-v2/NetCDF/1981/AVHRR/avhrr-only-v2.19810901.nc"
+anc:::allgroups(f1)
+anc:::allgroups(f2)
+anc:::allgroups(f3)
 
 
 nc <- anc:::Rnc_open(f1)

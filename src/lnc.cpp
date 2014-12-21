@@ -49,8 +49,20 @@ List Rnc_inq(int grpid) {
   int status; 
   int ndims, nvars, ngatts, unlimdimid;
   status = nc_inq(grpid, &ndims, &nvars, &ngatts, &unlimdimid); 
+  
+  size_t ilen; 
+  char recname[NC_MAX_NAME+1];
+  // int nc_inq_dim     (int ncid, int dimid, char* name, size_t* lengthp);
+  IntegerVector dimlens(ndims);
+  CharacterVector dnames(ndims); 
+  for (int idim = 0; idim < ndims; idim++) {
+    status = nc_inq_dim(grpid, idim, recname, &ilen); 
+    dimlens[idim] = ilen; 
+    dnames[idim] = recname; 
+  }
+  
   List out = List::create(); 
-  out["ndims"] = ndims;
+  out["dims"] = List::create(Named("length") = dimlens, Named("name") = dnames);
   out["nvars"] = nvars;
   out["ngatts"] = ngatts; 
   out["unlimdimid"] = unlimdimid;

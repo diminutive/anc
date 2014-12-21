@@ -5,6 +5,9 @@ f3 <- "/rdsi/PRIVATE/data/eclipse.ncdc.noaa.gov/pub/OI-daily-v2/NetCDF/1981/AVHR
 
 nc <- anc:::Rnc_open(f1)
 groups <- anc:::Rnc_inq_grps(nc)
+anc:::Rnc_inq(nc)
+anc:::Rnc_inq(groups[1])
+anc:::Rnc_inq(groups[2])
 
 for (i in seq_along(groups)) {
   print(anc:::Rnc_inq_grpname(groups[i]))

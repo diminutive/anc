@@ -1,6 +1,7 @@
 ## are there groups
 allgroups <- function(dsn) {
-  inc <- Rnc_open(dsn)
+  inc0 <- inc <- Rnc_open(dsn)
+  on.exit(Rnc_close(inc0))
   ## any groups? 
   groupids <- groupnames <- NULL; 
   
@@ -10,11 +11,21 @@ allgroups <- function(dsn) {
     groupids <- c(groupids, groups)
     inc <- groups
   }
-
-  if (length(groupids) < 1) return(NULL)
-  list(groups = groupids, names = sapply(groupids, Rnc_inq_grpname))
+  if (length(groupids) < 1) {
+    groupids <- inc0
+    groupnames <- make.names(basename(dsn))
+  } else {
+    sapply(groupids, Rnc_inq_grpname)
+  }
+ gg <- list(groups = groupids, names = groupnames)
+ qq <- lapply(gg$groups, Rnc_inq)
+ names(qq) <- gg$names
+  qq
+  
 }
 
 ## if no groups, main is only "group"
-## allvars <- function(dsn) {}
+ginq <- function(id) {
+  Rnc_inq(id) 
+}
 

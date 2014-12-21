@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-#include <netcdf.h>
+#include <netcdf.hh>
 
 using namespace Rcpp;
 
@@ -41,6 +41,23 @@ CharacterVector Rnc_inq_grpname(int grpid) {
   CharacterVector cnames = name_in; 
   return cnames; 
 }
+
+// once we have a given ID (group-less file, or specific group)
+// find its ndims
+// [[Rcpp::export]]
+List Rnc_inq(int grpid) {
+  int status; 
+  int ndims, nvars, ngatts, unlimdimid;
+  status = nc_inq(grpid, &ndims, &nvars, &ngatts, &unlimdimid); 
+  List out = List::create(); 
+  out["ndims"] = ndims;
+  out["nvars"] = nvars;
+  out["ngatts"] = ngatts; 
+  out["unlimdimid"] = unlimdimid;
+  return out; 
+  
+}
+
 
 // [[Rcpp::export]]
 void Rnc_close(int ncid) {

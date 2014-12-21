@@ -58,7 +58,6 @@ List Rnc_inq(int grpid) {
   
 }
 
-
 // [[Rcpp::export]]
 void Rnc_close(int ncid) {
   int status = nc_close(ncid); 

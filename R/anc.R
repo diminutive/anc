@@ -2,12 +2,14 @@
 allgroups <- function(dsn) {
   inc0 <- inc <- Rnc_open(dsn)
   on.exit(Rnc_close(inc0))
-  ## any groups? 
+ ## any groups? 
   groupids <- groupnames <- NULL; 
   
   while(TRUE) {
+
+    
     groups <- unlist(lapply(inc, function(x) Rnc_inq_grps(x)))
-    if (length(groups) < 1) break; 
+  if (length(groups) < 1) break; 
     groupids <- c(groupids, groups)
     inc <- groups
   }
@@ -22,10 +24,5 @@ allgroups <- function(dsn) {
  names(qq) <- gg$names
   qq
   
-}
-
-## if no groups, main is only "group"
-ginq <- function(id) {
-  Rnc_inq(id) 
 }
 

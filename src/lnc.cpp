@@ -42,6 +42,27 @@ CharacterVector Rnc_inq_grpname(int grpid) {
   return cnames; 
 }
 
+// [[Rcpp::export]]
+NumericVector Rnc_get_vara(int ncid) {
+
+    int status; 
+    int nvals = 2; // * 3473362; 
+   // float dp[nvals]; 
+    int varid = 1; 
+      float *sum_buf=NULL;
+     sum_buf = (float *) calloc(nvals, 2*sizeof(float));
+
+   // float sum_buf = (float) calloc(2160 * 2, 2*sizeof(float));
+    //status = nc_get_vara( grpid, bindata_id, &strt, &count, sum_buf)
+    static size_t start[] = {0}; /* start at first value */
+    static size_t count[] = {nvals};
+    status = nc_get_vara(ncid, varid, start, count,  sum_buf);
+
+    NumericVector Rvals(nvals); 
+    for (int i = 0; i < nvals; i++) Rvals[i] = sum_buf[i]; 
+    return Rvals; 
+
+}
 // once we have a given ID (group-less file, or specific group)
 // find its ndims
 // [[Rcpp::export]]
@@ -50,11 +71,14 @@ List Rnc_inq(int grpid) {
   int ndims, nvars, ngatts, unlimdimid;
   status = nc_inq(grpid, &ndims, &nvars, &ngatts, &unlimdimid); 
   
+  if (ndims < 1) return List::create();
   size_t ilen; 
   char recname[NC_MAX_NAME+1];
+  
   // int nc_inq_dim     (int ncid, int dimid, char* name, size_t* lengthp);
   IntegerVector dimlens(ndims);
   CharacterVector dnames(ndims); 
+  //printf("%i\n", ndims); 
   for (int idim = 0; idim < ndims; idim++) {
     status = nc_inq_dim(grpid, idim, recname, &ilen); 
     dimlens[idim] = ilen; 
@@ -73,18 +97,19 @@ List Rnc_inq(int grpid) {
   nc_type var_type; 
   for (int ivar = 0; ivar < nvars; ivar++) {
     status = nc_inq_var(grpid, ivar, recname, &var_type, &var_ndim, var_dimids, &var_natts); 
-  //  dimlens[idim] = ilen; 
     vnames[ivar] = recname; 
-    //vtypes[ivar] = ??; 
-    
     
   }
   
+  
+  
   IntegerVector R_dimids(var_ndim); 
-  //for (int ii = 0; ii < var_ndim; ii++) R_dimids[ii] = var_dimids[ii]; 
+  for (int ii = 0; ii < var_ndim; ii++) R_dimids[ii] = var_dimids[ii]; 
   List out = List::create(); 
   out["dims"] = List::create(Named("length") = dimlens, Named("name") = dnames);
-  out["vars"] = List::create(Named("varnames") = vnames, Named("natts") = var_natts); //, Named("dimIDs") = R_dimids); 
+  out["vars"] = List::create(Named("varnames") = vnames, 
+                             Named("natts") = var_natts, 
+                             Named("dimIDs") = R_dimids); 
   out["ngatts"] = ngatts; 
   out["unlimdimid"] = unlimdimid;
   return out; 

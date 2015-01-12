@@ -44,24 +44,25 @@ CharacterVector Rnc_inq_grpname(int grpid) {
 
 // [[Rcpp::export]]
 NumericVector Rnc_get_vara(int ncid) {
-
-    int status; 
-    int nvals = 2; // * 3473362; 
-   // float dp[nvals]; 
-    int varid = 1; 
-      float *sum_buf=NULL;
-     sum_buf = (float *) calloc(nvals, 2*sizeof(float));
-
-   // float sum_buf = (float) calloc(2160 * 2, 2*sizeof(float));
-    //status = nc_get_vara( grpid, bindata_id, &strt, &count, sum_buf)
-    static size_t start[] = {0}; /* start at first value */
-    static size_t count[] = {nvals};
-    status = nc_get_vara(ncid, varid, start, count,  sum_buf);
-
-    NumericVector Rvals(nvals); 
-    for (int i = 0; i < nvals; i++) Rvals[i] = sum_buf[i]; 
-    return Rvals; 
-
+  
+  int status; 
+  int nvals =  3473362;
+  
+  // float dp[nvals]; 
+  int varid = 1; 
+  float *sum_buf=NULL;
+  // nvals, start and count refer to the index of the compound type
+  // in this case each element consists of two floats (sum and sumsq)
+  sum_buf = (float *) calloc(nvals * 2, 2*sizeof(float));
+  printf("%i\n", nvals); 
+  static size_t start[] = {0}; /* start at first value */
+  static size_t count[] = {nvals};
+  status = nc_get_vara(ncid, varid, start, count,  sum_buf);
+  
+  NumericVector Rvals(nvals * 2); 
+  for (int i = 0; i < (nvals * 2); i++) Rvals[i] = sum_buf[i]; 
+  return Rvals; 
+  
 }
 // once we have a given ID (group-less file, or specific group)
 // find its ndims
@@ -85,13 +86,14 @@ List Rnc_inq(int grpid) {
     dnames[idim] = recname; 
   }
   
-
+  
   //   int nc_inq_var(int ncid, int varid, char *name, nc_type *xtypep, int *ndimsp, int dimids[], int *nattsp);
   // var dims somehow IntegerVector lens(nvars);
   CharacterVector vnames(nvars); 
+  
   //?? vtypes? CharacterVector vtypes(nvars); 
   int  var_dimids[NC_MAX_VAR_DIMS];
-
+  
   int var_natts; 
   int var_ndim; 
   nc_type var_type; 
@@ -99,6 +101,7 @@ List Rnc_inq(int grpid) {
     status = nc_inq_var(grpid, ivar, recname, &var_type, &var_ndim, var_dimids, &var_natts); 
     vnames[ivar] = recname; 
     
+   // printf("%s %i\n", recname, var_type); 
   }
   
   
@@ -108,8 +111,8 @@ List Rnc_inq(int grpid) {
   List out = List::create(); 
   out["dims"] = List::create(Named("length") = dimlens, Named("name") = dnames);
   out["vars"] = List::create(Named("varnames") = vnames, 
-                             Named("natts") = var_natts, 
-                             Named("dimIDs") = R_dimids); 
+  Named("natts") = var_natts, 
+  Named("dimIDs") = R_dimids); 
   out["ngatts"] = ngatts; 
   out["unlimdimid"] = unlimdimid;
   return out; 

@@ -12,7 +12,7 @@ nc <- anc:::Rnc_open(f[1])
 grpid <- anc:::Rnc_inq_grps(nc)[1]
 
 x <- anc:::Rnc_get_vara(grpid)
-
+head(x)
 ## NumericVector Rnc_get_var_double(int ncid, int varid, int nvals) {
 
 vname <- "chlor_a"

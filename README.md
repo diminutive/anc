@@ -10,10 +10,11 @@ The NetCDF4 format from NASA consists of a file with two groups
 The "level-3_binned_data" has multiple variables which of "compound type". This just means that they can contain data of different types, like a basic table. 
 
 BinList - this is a "row" for every populated bin
-         nobs  nscenes , time_rec (int16)
-         bin_num, flags_set (int32)
-         sel_cat (int8)
-         weights (float32)
+
+*         nobs  nscenes , time_rec (int16)
+*         bin_num, flags_set (int32)
+*         sel_cat (int8)
+*         weights (float32)
 
 Variables  - these are "paired" sum and sum_sq values (float32, I think)
 e.g. the "RRS" files contain Angstrom, Aot_869, Rrs_412, etc. (depends on the platform/sensor)

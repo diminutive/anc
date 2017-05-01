@@ -43,25 +43,33 @@ CharacterVector Rnc_inq_grpname(int grpid) {
 }
 
 // [[Rcpp::export]]
-NumericVector Rnc_get_vara(int ncid) {
+List Rnc_get_vara(int ncid) {
   
+    List out = List::create(); 
+
   int status; 
   int nvals =  3473362;
   
   // float dp[nvals]; 
   int varid = 1; 
   float *sum_buf=NULL;
+ // unsigned char *bin_buf=NULL;
   // nvals, start and count refer to the index of the compound type
   // in this case each element consists of two floats (sum and sumsq)
   sum_buf = (float *) calloc(nvals * 2, 2*sizeof(float));
+ // bin_buf = (unsigned char *) calloc(nvals * 16, 8*16); 
   printf("%i\n", nvals); 
   static size_t start[] = {0}; /* start at first value */
   static size_t count[] = {nvals};
   status = nc_get_vara(ncid, varid, start, count,  sum_buf);
-  
+ 
   NumericVector Rvals(nvals * 2); 
   for (int i = 0; i < (nvals * 2); i++) Rvals[i] = sum_buf[i]; 
-  return Rvals; 
+
+  out["chlor_a"] = Rvals; 
+  //out["binlist"] = bin_buf; 
+  
+  return out; 
   
 }
 // once we have a given ID (group-less file, or specific group)

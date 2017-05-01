@@ -12,9 +12,9 @@ nc <- anc:::Rnc_open(f[1])
 grpid <- anc:::Rnc_inq_grps(nc)[1]
 
 x <- anc:::Rnc_get_vara(grpid)
-head(x)
+head(x[[1]])
 ## NumericVector Rnc_get_var_double(int ncid, int varid, int nvals) {
-
+##binlistsize <- 
 vname <- "chlor_a"
 ivar <- which(ag[[1]]$vars$varnames == vname) - 1
 
